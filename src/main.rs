@@ -1,21 +1,37 @@
+use colored::*;
 use rand::Rng;
-use std::cmp::Ordering;
-use std::io;
+use std::{cmp::Ordering, io};
 
 fn main() {
-    println!("Guess the number!");
+    println!("Hello World now i am rust developer :p :p :p");
+    println!("Guess Number !");
 
-    println!("Please input your guess.");
+    let guess_number = rand::thread_rng().gen_range(1, 100);
+    println!("The secreate Number: {}", guess_number);
 
-    let secret_number: i32 = rand::thread_rng().gen_range(1..=100);
+    println!("Please input your number");
 
-    println!("The secret number is: {secret_number}");
+    loop {
+        let mut guess = String::new();
 
-    let mut guess = String::new();
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Please add number here");
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Failed to read line");
+        let guess: u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
 
-    println!("You guessed: {guess}");
+        println!("youer Guess number: {}", guess);
+
+        match guess.cmp(&guess_number) {
+            Ordering::Less => println!("{}", "Too week number".red()),
+            Ordering::Greater => println!("{}", "Big number".blue()),
+            Ordering::Equal => {
+                println!("{}", "You win".green());
+                break;
+            }
+        }
+    }
 }
